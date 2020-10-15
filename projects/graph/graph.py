@@ -73,20 +73,40 @@ class Graph:
                 self.dft_recursive(neighbor, path)
 
     def bfs(self, starting_vertex, destination_vertex):
-        """
-        Return a list containing the shortest path from
-        starting_vertex to destination_vertex in
-        breath-first order.
-        """
-        pass  # TODO
+        visited = set()
+        queue = Queue()
+        queue.enqueue({'current_vertex': starting_vertex,
+                       'path': [starting_vertex]})
+        while queue.size() > 0:
+            currNode = queue.dequeue()
+            curr_path = currNode['path']
+            curr_vertex = currNode['current_vertex']
+            if curr_vertex not in visited:
+                if curr_vertex == destination_vertex:
+                    return curr_path
+                visited.add(curr_vertex)
+                for neighbor in self.get_neighbors(curr_vertex):
+                    new_path = list(curr_path)
+                    new_path.append(neighbor)
+                    queue.enqueue({'current_vertex': neighbor,
+                                   'path': new_path})
 
     def dfs(self, starting_vertex, destination_vertex):
-        """
-        Return a list containing a path from
-        starting_vertex to destination_vertex in
-        depth-first order.
-        """
-        pass  # TODO
+        stack = Stack()
+        # Each element in the stack is the current path e.g. [1, 2, 3...]
+        stack.push([starting_vertex])
+        visited = set()
+        while stack.size() > 0:
+            currPath = stack.pop() # [1, 2, 3]
+            currNode = currPath[-1] # 3
+            if currNode == destination_vertex:
+                return currPath
+            if currNode not in visited:
+                visited.add(currNode)
+                for neighbor in self.get_neighbors(currNode):
+                    newPath = list(currPath)
+                    newPath.append(neighbor)
+                    stack.push(newPath)
 
     def dfs_recursive(self, starting_vertex, destination_vertex):
         """
