@@ -108,15 +108,28 @@ class Graph:
                     newPath.append(neighbor)
                     stack.push(newPath)
 
-    def dfs_recursive(self, starting_vertex, destination_vertex):
-        """
-        Return a list containing a path from
-        starting_vertex to destination_vertex in
-        depth-first order.
+    def dfs_recursive(self, starting_vertex, destination_vertex, visited=None, path=None):
+        if visited is None:
+            visited = set()
+        if path is None:
+            path = []
 
-        This should be done using recursion.
-        """
-        pass  # TODO
+        visited.add(starting_vertex)
+        path = path + [starting_vertex] # makes a copy of the existing path
+
+        if starting_vertex == destination_vertex:
+            return path
+
+        for neighbor in self.get_neighbors(starting_vertex):
+            if neighbor not in visited:
+                new_path = self.dfs_recursive(neighbor, destination_vertex, visited, path)
+                if new_path is not None:
+                    return new_path
+        return None
+
+
+
+
 
 if __name__ == '__main__':
     graph = Graph()  # Instantiate your graph
